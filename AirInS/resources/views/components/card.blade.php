@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="{{ asset('/css/card.css') }}">
 <div class="property-card">
 
     {{-- Jika user login -> ke detail, jika guest -> ke login --}}
