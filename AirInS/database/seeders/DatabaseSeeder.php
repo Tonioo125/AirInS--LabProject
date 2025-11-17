@@ -16,14 +16,18 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        AirUser::factory()->create([
+        // 1. Seed categories first
+        $this->call(PropertyCategoriesSeeder::class);
+
+        // 2. Create admin user
+        $user = AirUser::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
         ]);
 
-        // Create 20 property records with fake photos
+        // 3. Create properties (Faker will choose valid category IDs)
         Property::factory(20)->create([
-            'user_id' => 1
+            'user_id' => $user->id,
         ]);
     }
 }
