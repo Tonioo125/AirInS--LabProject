@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,13 +6,27 @@
     <title>Document</title>
 </head>
 <body>
-    @include('components.navbar')
+    @include('components.navbar') -->
     <!-- return success login and dont if not logged in -->
-     @if(!Auth::check())
+     <!-- @if(!Auth::check())
         <h2 style="color:red;">You are not logged in. Please <a href="{{ route('login.show') }}">Login</a>.</h2>
     @else
         <h1>Welcome, {{ Auth::user()->name }}!</h1>
         <p>You have successfully logged in.</p>
     @endif
 </body>
-</html>
+</html> -->
+
+@extends('layouts.main')
+
+@section('content')
+
+<div class="property-grid">
+    @foreach ($properties as $property)
+        <x-card :property="$property" />
+    @endforeach
+</div>
+
+{{ $properties->links() }}
+
+@endsection

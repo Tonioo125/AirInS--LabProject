@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('airusers');
-            $table->foreignId('category_id')->constrained('property_categories');
+            $table->foreignId('user_id')->constrained('airusers')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('property_categories')->onDelete('cascade');
             $table->string('title', 100);
             $table->string('description', 255);
             $table->string('photos', 255);

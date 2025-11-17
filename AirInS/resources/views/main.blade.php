@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-
 <nav class="navbar">
     <div class="left">
         <a href="{{ route('home') }}" class="logo">AirInS</a>
@@ -42,4 +40,3 @@
         @endauth
     </div>
 </nav>
-

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('booking_headers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('airusers');
+            $table->foreignId('user_id')->constrained('airusers')->onDelete('cascade');
             $table->date('booking_date');
             $table->date('check_in_date');
             $table->date('check_out_date');
