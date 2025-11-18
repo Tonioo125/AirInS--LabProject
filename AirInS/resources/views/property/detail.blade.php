@@ -12,10 +12,6 @@
         .review { border-left: 3px solid #007bff; padding: 15px; margin: 10px 0; background: #f9f9f9; }
         button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
         button:hover { background: #0056b3; }
-        .alert { padding:10px; border-radius:6px; margin:10px 0; }
-        .alert.success { background:#e6ffed; color:#166534; border:1px solid #86efac; }
-        .alert.error { background:#ffe4e6; color:#7f1d1d; border:1px solid #fca5a5; }
-        pre.debug { background:#111; color:#0f0; padding:10px; border-radius:6px; overflow:auto; }
     </style>
 </head>
 <body>
@@ -35,36 +31,6 @@
         {{-- Booking Form --}}
         <div class="booking-form">
             <h3>Form Pemesanan</h3>
-
-            @if(session('success'))
-                <div class="alert success">{{ session('success') }}</div>
-            @endif
-            @if(session('error'))
-                <div class="alert error">{{ session('error') }}</div>
-            @endif
-            @if($errors->any())
-                <div class="alert error">
-                    <strong>Validasi gagal:</strong>
-                    <ul style="margin:6px 0 0 16px;">
-                        @foreach($errors->all() as $err)
-                            <li>{{ $err }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            @if(session('debug_booking_id') || session('debug_exception'))
-                <pre class="debug">{{ json_encode([
-'debug_booking_id' => session('debug_booking_id'),
-'debug_booking_detail_id' => session('debug_booking_detail_id'),
-'debug_overlap' => session('debug_overlap'),
-'debug_nights' => session('debug_nights'),
-'debug_exception' => session('debug_exception'),
-'debug_message' => session('debug_message'),
-'old_input' => old(),
-], JSON_PRETTY_PRINT) }}</pre>
-            @endif
-
             <form action="{{ route('bookings.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="property_id" value="{{ $property->id }}">
@@ -83,7 +49,13 @@
                     <label for="guests">Jumlah Tamu:</label>
                     <input type="number" id="guests" name="guests" min="1" required>
                 </div>
-                <button type="submit">{{ auth()->check() ? 'Pesan Sekarang' : 'Login untuk Pesan' }}</button>
+                @if(auth()->check())
+                    <button type="submit">Pesan Sekarang</button>
+                @else
+                    <a href="{{ route('login') }}">
+                        <button type="button">Login untuk Pesan</button>
+                    </a>
+                @endif
             </form>
         </div>
 

@@ -16,17 +16,29 @@
     @endif
 </body>
 </html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    @extends('layouts.main')
+    
+    @section('content')
+    
+    <div class="property-grid">
+        @foreach ($properties as $property)
+            <x-card :property="$property" />
+        @endforeach
+    </div>
+    
+    {{ $properties->links() }}
+    
+    @endsection
+</body>
 
-@extends('layouts.main')
+<script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
 
-@section('content')
-
-<div class="property-grid">
-    @foreach ($properties as $property)
-        <x-card :property="$property" />
-    @endforeach
-</div>
-
-{{ $properties->links() }}
-
-@endsection
+</html>
