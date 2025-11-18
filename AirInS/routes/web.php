@@ -14,10 +14,10 @@ Route::middleware('guest')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('welcome');
     Route::get('/register', [RegisterController::class, 'show'])->name('register');
     Route::post('/register', [RegisterController::class, 'register']);
-    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.show');
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 });
 
-Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.perform');
 Route::get('/property/detail/{id}', [PropertyController::class, 'show'])->name('property.detail');
 Route::get('/search', [PropertyController::class, 'search'])->name('search');
 
@@ -33,16 +33,16 @@ Route::post('/logout', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings');
-    Route::post('/bookings', [BookingController::class, 'store'])->name('booking.store');
+    Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
     Route::post('/bookings/{id}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 });
 
 //Admin Only
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [HomeController::class, 'adminDashboard'])->name('admin.dashboard');
 });
 
 //User Routes
-Route::middleware(['auth', 'role:user,admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/user/dashboard', [HomeController::class, 'userDashboard'])->name('user.dashboard');
 });

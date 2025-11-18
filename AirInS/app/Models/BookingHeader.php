@@ -24,4 +24,10 @@ class BookingHeader extends Model
     {
         return $this->hasOne(BookingDetail::class, 'booking_id');
     }
+
+    // Tambahan: relasi ke reviews pada booking ini
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'booking_id');
+    }
 }

@@ -39,7 +39,7 @@ class PropertyController extends Controller
      */
     public function show($id)
     {
-        $property = Property::with('airusers', 'bookingDetails.bookingHeaders.airusers')->findOrFail($id);
+        $property = Property::with('airusers', 'bookingDetails.bookingHeader.airusers')->findOrFail($id);
         $userHasCompleted = false;
 
         if (Auth::check()) {
@@ -50,7 +50,17 @@ class PropertyController extends Controller
                 ->exists();
         }
 
-        return view('property.detail', compact('property', 'userHasCompleted'));
+        // Ambil semua booking header untuk properti ini + reviews.user
+        $bookingHeaders = BookingHeader::whereHas('bookingDetails', function ($q) use ($id) {
+                $q->where('property_id', $id);
+            })
+            ->with(['reviews.user', 'airusers'])
+            ->get();
+
+        // Flatten ke koleksi ulasan
+        $reviews = $bookingHeaders->pluck('reviews')->flatten();
+
+        return view('property.detail', compact('property', 'userHasCompleted', 'reviews'));
     }
 
     /**
