@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('booking_details', function (Blueprint $table) {
-            $table->id();
             $table->foreignId('booking_id')->constrained('booking_headers')->onDelete('cascade');
             $table->foreignId('property_id')->constrained('properties')->onDelete('cascade');
             $table->integer('guest_count');

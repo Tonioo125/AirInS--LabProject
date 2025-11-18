@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email', 50);
             $table->string('phone', 20);
             $table->string('gender', 6);
-            $table->string('role', 10);
+            $table->enum('role', ['member', 'admin'])->default('member');
             $table->string('password', 255);
             $table->timestamps();
         });

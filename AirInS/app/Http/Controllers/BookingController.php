@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\BookingDetail;
+use App\Models\BookingHeader;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+
+class BookingController extends Controller
+{
+    // menampilkan semua booking milik user
+    public function index()
+    {
+        $user = Auth::user();
+        $bookings = BookingHeader::with(['bookingDetails.property'])
+            ->where('user_id', $user->id)
+            ->orderBy('check_in_date', 'desc')
+            ->get();
+        return view('bookings.index', compact('bookings'));
+    }
+
+    // cancel booking
+    public function cancel($id)
+    {
+        $booking = BookingHeader::findOrFail($id);
+        if($booking->user_id !== Auth::user()->id){
+            abort(403);
+        }
+        $booking->delete();
+
+        return redirect()->route('bookings')->with('success', 'Booking canceled successfully.');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'property_id' => 'required|exists:properties,id',
+            'check_in' => 'required|date|after:today',
+            'check_out' => 'required|date|after:check_in',
+            'guests' => 'required|integer|min:1',
+        ]);
+
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Anda harus login untuk memesan.');
+        }
+
+        // Buat BookingHeader
+        $bookingHeader = BookingHeader::create([
+            'user_id' => Auth::id(),
+            'booking_date' => now(),
+            'check_in_date' => $request->check_in,
+            'check_out_date' => $request->check_out,
+        ]);
+
+        // Buat BookingDetail
+        BookingDetail::create([
+            'booking_id' => $bookingHeader->id,
+            'property_id' => $request->property_id,
+            'guest_count' => $request->guests,
+        ]);
+
+        return redirect()->route('bookings')->with('success', 'Booking berhasil dibuat!');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}

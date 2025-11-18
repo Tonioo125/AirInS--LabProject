@@ -1,0 +1,133 @@
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    margin: 0;
+    background-color: #fafafa;
+    color: #333;
+}
+/* navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    background-color: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+.logo {
+    font-size: 22px;
+    font-weight: 700;
+    color: #e60023;
+}
+.logo span {
+    color: #111;
+}
+
+.search {
+    flex: 1;
+    margin: 0 50px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.navbar nav a {
+    margin-left: 25px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+}
+.navbar nav a:hover {
+    color: #000;
+}
+
+.btn-signup {
+    background-color: #e60023;
+    color: #fff !important;
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+/* card */
+.property-card {
+    background-color: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.property-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.property-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.property-info {
+    padding: 15px;
+}
+
+.property-info h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.property-info .location {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 8px;
+}
+
+.property-info .price {
+    font-weight: 600;
+    color: #e60023;
+}
+
+.property-info .price span {
+    color: #666;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+/* SEARCH PAGE */
+.search-page {
+    padding: 40px;
+    text-align: center;
+}
+
+.search-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.search-title span {
+    color: #e60023;
+}
+
+.no-result {
+    font-size: 18px;
+    color: #777;
+    margin-top: 50px;
+}
+
+.pagination {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+/* PROPERTY GRID */
+.property-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    justify-content: center;
+}

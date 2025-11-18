@@ -17,7 +17,7 @@ class AirUserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'phone' => $this->faker->phoneNumber(),
             'gender' => $this->faker->randomElement(['male', 'female']),
-            'role' => 'member',
+            'role' => 'admin',
             'password' => Hash::make('password'),
         ];
     }

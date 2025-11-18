@@ -19,4 +19,36 @@ class AirUser extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    // Role checking methods
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isMember(): bool
+    {
+        return $this->role === 'member';
+    }
+
+    public function hasRole($role): bool
+    {
+        return $this->role === $role;
+    }
+
+    // Relationships
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class, 'user_id', 'id');
+    }
+
+    public function bookingHeaders()
+    {
+        return $this->hasMany(BookingHeader::class, 'user_id', 'id');
+    }
+
+    public function properties()
+    {
+        return $this->hasMany(Property::class, 'user_id', 'id');
+    }
 }
