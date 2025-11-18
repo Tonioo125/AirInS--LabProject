@@ -1,23 +1,27 @@
 <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
-    <div class="container-fluid">
-        <a class="navbar-brand fw-semibold" href="{{ auth()->check() ? route('home') : route('welcome') }}">AirInS</a>
+    <div class="container-fluid mx-5">
+        <a class="navbar-brand fw-semibold logo" href="{{ auth()->check() ? route('home') : route('welcome') }}">AirInS</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
             aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="mainNavbar">
-            {{-- Search --}}
-            <form class="d-flex me-auto mt-2 mt-lg-0" action="{{ route('search') }}" method="GET" style="max-width:320px;">
+        <div class="mt-2 mt-lg-0" style="max-width: 75vw; width: 100%;">
+            <form class="d-flex" action="{{ route('search') }}" method="GET">
                 <div class="input-group">
-                    <input class="form-control form-control-sm" type="text" name="keyword" placeholder="Search properties..."
-                           value="{{ request('keyword') }}">
+                    <input class="form-control form-control-sm"
+                        type="text"
+                        name="keyword"
+                        placeholder="Search properties..."
+                        value="{{ request('keyword') }}">
                     <button class="btn btn-outline-primary btn-sm" type="submit">Search</button>
                 </div>
             </form>
+        </div>
 
             <ul class="navbar-nav ms-auto align-items-lg-center">
                 @guest
@@ -41,7 +45,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userMenu"
                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="me-1">{{ auth()->user()->name }}</span>
+                            <span class="me-1"> Hello {{ auth()->user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userMenu">
                             <li><a class="dropdown-item" href="/profile">Profile</a></li>
@@ -64,5 +68,5 @@
     </div>
 </nav>
 
-<script src="{{ asset('bootstrap/js/bootstrap.js') }}"></script>
+<script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
