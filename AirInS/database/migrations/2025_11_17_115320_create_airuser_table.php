@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('airusers', function (Blueprint $table) {
-            $table->id();
+            $table->string('id', 5)->primary();
             $table->string('name', 5);
             $table->string('email', 50);
             $table->string('phone', 20);
             $table->string('gender', 6);
             $table->enum('role', ['member', 'admin'])->default('member');
             $table->string('password', 255);
+            $table->rememberToken();
             $table->timestamps();
         });
     }

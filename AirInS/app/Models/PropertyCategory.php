@@ -9,6 +9,9 @@ class PropertyCategory extends Model
 {
     Use HasFactory;
 
+    protected $keyType = 'string';
+    public $incrementing = false;
+
     protected $table = 'property_categories';
 
     protected $fillable = [

@@ -60,7 +60,7 @@ class PropertyController extends Controller
         // Flatten ke koleksi ulasan
         $reviews = $bookingHeaders->pluck('reviews')->flatten();
 
-        return view('property.detail', compact('property', 'userHasCompleted', 'reviews'));
+        return view('bookings.detail', compact('property', 'userHasCompleted', 'reviews'));
     }
 
     /**

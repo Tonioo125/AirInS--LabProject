@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
-<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+<link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
     <div class="container-fluid mx-5">

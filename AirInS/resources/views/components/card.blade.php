@@ -2,7 +2,7 @@
 <div class="property-card">
 
     {{-- Jika user login -> ke detail, jika guest -> ke login --}}
-    <a href="{{ route('property.detail', $property->id) }}">
+    <a href="{{ route('bookings.detail', $property->id) }}">
         <img src="{{ asset('storage/'.$property->photos) }}" alt="Property Image">
     </a>
 

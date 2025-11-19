@@ -15,9 +15,10 @@ body {
 }
 .logo {
     font-size: 22px;
-    font-weight: 700;
-    color: #e60023;
+    font-weight: bold !important;
+    color: rgb(255, 49, 94) !important;
 }
+
 .logo span {
     color: #111;
 }

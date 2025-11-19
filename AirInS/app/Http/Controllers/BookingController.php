@@ -6,7 +6,7 @@ use App\Models\BookingDetail;
 use App\Models\BookingHeader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Psy\Readline\Hoa\Console;
 
 class BookingController extends Controller
 {
@@ -46,9 +46,10 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
+        // dump($request->all());
         $request->validate([
             'property_id' => 'required|exists:properties,id',
-            'check_in' => 'required|date|after:today',
+            'check_in' => 'required|date|after_or_equal:today',
             'check_out' => 'required|date|after:check_in',
             'guests' => 'required|integer|min:1',
         ]);
@@ -58,8 +59,14 @@ class BookingController extends Controller
         }
 
         $totalNights = (new \DateTime($request->check_out))->diff(new \DateTime($request->check_in))->days;
+        $totalNights += 1; // termasuk hari check-in
         $property = \App\Models\Property::findOrFail($request->property_id);
         $totalPrice = $property->price * $totalNights;
+
+        // Debugging output
+        // dump('Total Nights: ' . $totalNights);
+        // dump('Price per Night: ' . $property->price);
+        // dump('Total Price: ' . $totalPrice);
 
         // Buat BookingHeader
         $bookingHeader = BookingHeader::create([
@@ -78,9 +85,8 @@ class BookingController extends Controller
             'price_per_night' => $property->price, // Harga akan diatur nanti
         ]);
 
-        //add debug property_id
-        // session()->flash('debug_property_id', $request->property_id);
-        // var_dump($request->property_id);
+        //return errror jika ada masalah
+
 
         return redirect()->route('home')->with('success', 'Booking berhasil dibuat!');
     }

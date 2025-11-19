@@ -12,6 +12,9 @@ class AirUser extends Authenticatable
 
     protected $table = 'airusers';
 
+    protected $keyType = 'string';
+    public $incrementing = false;
+
     protected $fillable = [
         'name', 'email', 'phone', 'gender', 'role', 'password'
     ];

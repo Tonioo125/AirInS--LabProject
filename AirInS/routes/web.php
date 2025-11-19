@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +19,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::post('/login', [LoginController::class, 'login'])->name('login.perform');
-Route::get('/property/detail/{id}', [PropertyController::class, 'show'])->name('property.detail');
+Route::get('/property/detail/{id}', [PropertyController::class, 'show'])->name('bookings.detail');
 Route::get('/search', [PropertyController::class, 'search'])->name('search');
 
 //================================================
@@ -35,6 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings');
     Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
     Route::post('/bookings/{id}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+    Route::get('/review/{bookingId}', [ReviewController::class, 'create'])->name('review.create');
+    Route::post('/review/{bookingId}', [ReviewController::class, 'store'])->name('review.store');
 });
 
 //Admin Only
