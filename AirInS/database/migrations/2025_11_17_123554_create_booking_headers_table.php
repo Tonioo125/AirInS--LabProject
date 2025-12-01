@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('booking_headers', function (Blueprint $table) {
             $table->string('id', 5)->primary();
-            $table->foreignId('user_id')->constrained('airusers')->onDelete('cascade');
+            $table->string('user_id', 5);
             $table->date('booking_date');
             $table->date('check_in_date');
             $table->date('check_out_date');
             $table->bigInteger('total_price');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('airusers')->onDelete('cascade');
         });
     }
 

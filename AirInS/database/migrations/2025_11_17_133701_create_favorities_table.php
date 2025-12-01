@@ -12,9 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('favorities', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained('airusers')->onDelete('cascade');
-            $table->foreignId('property_id')->constrained('properties')->onDelete('cascade');
+            $table->string('user_id', 5);
+            $table->string('property_id', 5);
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('airusers')->onDelete('cascade');
+            $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
         });
     }
 

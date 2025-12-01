@@ -13,6 +13,7 @@ class BookingHeader extends Model
     public $incrementing = false;
 
     protected $fillable = [
+        'id',
         'user_id',
         'check_in_date',
         'check_out_date',
@@ -31,9 +32,8 @@ class BookingHeader extends Model
         return $this->hasOne(BookingDetail::class, 'booking_id');
     }
 
-    // Tambahan: relasi ke reviews pada booking ini
     public function reviews()
     {
-        return $this->hasMany(Review::class, 'booking_id');
+        return $this->hasOne(Review::class, 'booking_id');
     }
 }

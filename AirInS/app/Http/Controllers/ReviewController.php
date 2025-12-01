@@ -6,6 +6,7 @@ use App\Models\BookingHeader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Review;
+use Illuminate\Support\Str;
 
 class ReviewController extends Controller
 {
@@ -34,7 +35,7 @@ class ReviewController extends Controller
     }
     public function store(Request $request, $bookingId)
     {
-        $booking = BookingHeader::where('booking_id', $bookingId)->firstOrFail();
+        $booking = BookingHeader::where('id', $bookingId)->firstOrFail();
 
         // Validasi
         $validated = $request->validate([
@@ -43,11 +44,10 @@ class ReviewController extends Controller
         ]);
 
         Review::create([
-            'ReviewID'  => uniqid(),
-            'BookingID' => $booking->BookingID,
-            'UserID'    => Auth::user()->UserID,
-            'Rating'    => $validated['rating'],
-            'Comment'   => $validated['comment'],
+            'id'  => Str::upper(Str::random(5)),
+            'booking_id' => $booking->id,
+            'rating'    => $validated['rating'],
+            'comment'   => $validated['comment'],
         ]);
 
         return redirect('/bookings')->with('success', 'Review submitted successfully!');

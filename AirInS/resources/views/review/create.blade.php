@@ -8,7 +8,7 @@
 
     <div style="background:#fff; padding:25px; border-radius:12px; box-shadow:0 3px 10px rgba(0,0,0,0.1);">
 
-        <h4>{{ $booking->property->title }}</h4>
+        <h4>{{ $booking->bookingDetails->first()->property->title }}</h4>
         <p>Check-out: {{ $booking->check_out_date }}</p>
 
         <form action="{{ route('review.store', $booking->id) }}" method="POST">

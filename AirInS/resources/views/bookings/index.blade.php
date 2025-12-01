@@ -8,7 +8,7 @@
         <p class="no-booking">You have no bookings yet.</p>
     @else
         @foreach ($bookings as $booking)
-            @php $detail = $booking->bookingDetails; @endphp
+            @php $detail = $booking->bookingDetails->first(); @endphp
             @if ($detail && is_object($detail) && $detail->property)
                 @php
                     $property = $detail->property;
@@ -31,7 +31,14 @@
 
                         @if ($isCompleted)
                             <p class="status completed">Booking completed</p>
-                            <a href="/reviews/create/{{ $booking->id }}" class="btn btn-review">Leave a Review</a>
+                            @if (!$booking->reviews)
+                                <a href="{{ route('review.create', $booking->id) }}"
+                                   class="btn btn-review">
+                                    Leave a Review
+                                </a>
+                            @else
+                                <p class="status reviewed">Review submitted</p>
+                            @endif
                         @else
                             <form action="{{ route('bookings.cancel', $booking->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this booking?')">
                                 @csrf

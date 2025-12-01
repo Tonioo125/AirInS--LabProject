@@ -7,6 +7,7 @@ use App\Models\AirUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -27,6 +28,7 @@ class RegisterController extends Controller
         ]);
 
         $user = AirUser::create([
+            'id' => Str::upper(Str::random(5)),
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,

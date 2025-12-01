@@ -50,15 +50,11 @@ class PropertyController extends Controller
                 ->exists();
         }
 
-        // Ambil semua booking header untuk properti ini + reviews.user
-        $bookingHeaders = BookingHeader::whereHas('bookingDetails', function ($q) use ($id) {
-                $q->where('property_id', $id);
-            })
-            ->with(['reviews.user', 'airusers'])
-            ->get();
+        $bookingDetails = $property->bookingDetails;
 
-        // Flatten ke koleksi ulasan
-        $reviews = $bookingHeaders->pluck('reviews')->flatten();
+        $reviews = \App\Models\Review::whereHas('bookingHeader.bookingDetails', function ($q) use ($id) {
+            $q->where('property_id', $id);
+        })->get();
 
         return view('bookings.detail', compact('property', 'userHasCompleted', 'reviews'));
     }

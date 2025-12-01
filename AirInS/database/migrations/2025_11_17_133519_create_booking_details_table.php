@@ -12,11 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('booking_details', function (Blueprint $table) {
-            $table->foreignId('booking_id')->constrained('booking_headers')->onDelete('cascade');
-            $table->foreignId('property_id')->constrained('properties')->onDelete('cascade');
+            $table->string('booking_id', 5);
+            $table->string('property_id', 5);
             $table->integer('guest_count');
             $table->integer('price_per_night');
             $table->timestamps();
+
+            $table->unique('booking_id');
+            $table->foreign('booking_id')->references('id')->on('booking_headers')->onDelete('cascade');
+            $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
         });
     }
 

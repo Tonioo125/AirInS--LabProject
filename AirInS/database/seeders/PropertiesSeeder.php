@@ -38,7 +38,7 @@ class PropertiesSeeder extends Seeder
 
             // Insert with your EXACT columns
             DB::table('properties')->insert([
-                'user_id' => 1,                      // adjust if needed
+                'user_id' => 'A0001',                      // adjust if needed
                 'category_id' => \App\Models\PropertyCategory::inRandomOrder()->first()->id,
                 'title' => $faker->sentence(4),
                 'description' => $faker->text(120),

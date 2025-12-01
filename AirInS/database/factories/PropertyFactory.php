@@ -7,6 +7,7 @@ use App\Models\AirUser;
 use App\Models\PropertyCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class PropertyFactory extends Factory
 {
@@ -18,9 +19,11 @@ class PropertyFactory extends Factory
 
         $files = collect(File::files($dummyPath))
             ->map(fn($file) => $file->getFilename());
+
         return [
-            'user_id' => AirUser::inRandomOrder()->first()->id ?? 1,
-            'category_id' => PropertyCategory::inRandomOrder()->first()->id ?? 1,
+            'id' => Str::upper(Str::random(5)), // tambahkan id string 5 karakter
+            'user_id' => AirUser::inRandomOrder()->first()->id ?? 'A0001',
+            'category_id' => PropertyCategory::inRandomOrder()->first()->id ?? 'C0001',
             'title' => $this->faker->sentence(4),
             'description' => $this->faker->text(200),
             'photos' => 'dummy_properties/' . $files->random(),

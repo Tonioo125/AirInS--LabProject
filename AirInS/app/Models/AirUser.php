@@ -16,7 +16,7 @@ class AirUser extends Authenticatable
     public $incrementing = false;
 
     protected $fillable = [
-        'name', 'email', 'phone', 'gender', 'role', 'password'
+        'id', 'name', 'email', 'phone', 'gender', 'role', 'password', 'remember_token',
     ];
 
     protected $hidden = [

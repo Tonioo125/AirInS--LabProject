@@ -15,6 +15,7 @@ class PropertyCategory extends Model
     protected $table = 'property_categories';
 
     protected $fillable = [
+        'id',
         'name',
     ];
 

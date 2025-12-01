@@ -26,8 +26,10 @@ Route::get('/search', [PropertyController::class, 'search'])->name('search');
 
 //Logged In
 
-Route::post('/logout', function () {
+Route::post('/logout', function (Illuminate\Http\Request $request) {
     Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
     return redirect('/login');
 })->name('logout');
 

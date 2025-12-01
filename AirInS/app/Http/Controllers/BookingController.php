@@ -7,6 +7,7 @@ use App\Models\BookingHeader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Psy\Readline\Hoa\Console;
+use Illuminate\Support\Str;
 
 class BookingController extends Controller
 {
@@ -14,11 +15,16 @@ class BookingController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $bookings = BookingHeader::with(['bookingDetails.property'])
+        $bookings = BookingHeader::with(['bookingDetails.property', 'reviews'])
             ->where('user_id', $user->id)
             ->orderBy('check_in_date', 'desc')
             ->get();
-        return view('bookings.index', compact('bookings'));
+
+        $isCompleted = function ($booking) {
+            return now()->greaterThan($booking->check_out_date);
+        };
+        
+        return view('bookings.index', compact('bookings', 'isCompleted'));
     }
 
     // cancel booking
@@ -70,6 +76,7 @@ class BookingController extends Controller
 
         // Buat BookingHeader
         $bookingHeader = BookingHeader::create([
+            'id' => Str::upper(Str::random(5)),
             'user_id' => Auth::id(),
             'booking_date' => now(),
             'check_in_date' => $request->check_in,
