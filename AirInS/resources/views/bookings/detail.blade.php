@@ -1,78 +1,154 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="property-detail">
-    {{-- Tampilkan error validasi --}}
+<div class="container py-5">
+
+    {{-- Validation Errors --}}
     @if ($errors->any())
-    <div style="color: #b94a48; background: #f2dede; border: 1px solid #eed3d7; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
-        <ul style="margin: 0; padding-left: 20px;">
+    <div class="alert alert-danger">
+        <ul class="mb-0">
             @foreach ($errors->all() as $error)
             <li>{{ $error }}</li>
             @endforeach
         </ul>
     </div>
     @endif
-    <h1>{{ $property->title }}</h1>
 
-    <img src="{{ asset('storage/'.$property->photos) }}" alt="{{ $property->title }}" style="width: 100%; max-width: 600px; border-radius: 8px;">
+    {{-- Main Content --}}
+    <div class="row g-5">
 
-    <div class="property-info">
-        <p><strong>Lokasi:</strong> {{ $property->location }}</p>
-        <p><strong>Kategori:</strong> {{ optional($property->propertyCategories)->name ?? 'N/A' }}</p>
-        <p><strong>Harga:</strong> Rp{{ number_format($property->price, 0, ',', '.') }} / malam</p>
-        <p><strong>Deskripsi:</strong> {{ $property->description ?? 'Tidak ada deskripsi' }}</p>
-        <p><strong>Host:</strong> {{ optional($property->airusers)->name ?? 'N/A' }}</p>
-    </div>
+        {{-- Left Image --}}
+        <div class="col-lg-7">
+            <img src="{{ asset('storage/' . $property->photos) }}"
+                alt="{{ $property->title }}"
+                class="img-fluid rounded-4 shadow-sm"
+                style="width:100%; height:420px; object-fit:cover;">
+        </div>
 
-    {{-- Booking Form --}}
-    <div class="booking-form">
-        <h3>Form Pemesanan</h3>
+        {{-- Right Booking Card --}}
+        <div class="col-lg-5">
+            {{-- Property Title --}}
+            <h2 class="fw-bold mb-0">{{ $property->title }}</h2>
+            <div class="d-flex mb-3 align-items-center text-muted">
+                <span>{{ $property->location }}</span>
 
-        <form action="{{ route('bookings.store') }}" method="POST">
-            @csrf
-            <input type="hidden" name="property_id" value="{{ $property->id }}">
+                <span class="mx-1" style="font-size: 8px;">●</span> {{-- separator dot --}}
 
-            <div style="margin: 10px 0;">
-                <label for="check_in">Check-in:</label>
-                <input type="date" id="check_in" name="check_in" value="{{ old('check_in') }}" required>
+                <span>Category: {{ optional($property->propertyCategories)->name ?? 'N/A' }}</span>
             </div>
 
-            <div style="margin: 10px 0;">
-                <label for="check_out">Check-out:</label>
-                <input type="date" id="check_out" name="check_out" value="{{ old('check_out') }}" required>
-            </div>
+            <h4 class="fw-bold mb-0 reds-color text-danger">
+                Rp {{ number_format($property->price, 0, ',', '.') }} <small class="text-muted">/ night</small>
+            </h4>
 
-            <div style="margin: 10px 0;">
-                <label for="guests">Jumlah Tamu:</label>
-                <input type="number" id="guests" name="guests" min="1" value="{{ old('guests') }}" required>
+            <p class="text-muted mb-1">Hosted by <strong class="text-black">{{ optional($property->airusers)->name ?? 'N/A' }}</strong></p>
+
+            {{-- Property Description --}}
+            <p class="mt-3">
+                {{ $property->description ?? 'No description available.' }}
+            </p>
+            <div class="card shadow-sm border-0 rounded-4 p-4">
+                <h5 class="fw-bold mb-4">Reserve</h5>
+
+                <form action="{{ route('bookings.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="property_id" value="{{ $property->id }}">
+
+                    {{-- Check-in --}}
+                    <div class="mb-3">
+                        <label class="form-label">Check-in</label>
+                        <div class="input-group">
+                            <input type="date"
+                                name="check_in"
+                                class="form-control border-0 border-bottom rounded-0"
+                                style="box-shadow:none;"
+                                value="{{ old('check_in') }}"
+                                required>
+                        </div>
+                    </div>
+
+                    {{-- Check-out --}}
+                    <div class="mb-3">
+                        <label class="form-label">Check-out</label>
+                        <div class="input-group">
+                            <input type="date"
+                                name="check_out"
+                                class="form-control border-0 border-bottom rounded-0"
+                                style="box-shadow:none;"
+                                value="{{ old('check_out') }}"
+                                required>
+                        </div>
+                    </div>
+
+                    {{-- Guests selector --}}
+                    <div class="mb-3">
+                        <label class="form-label">Guests</label>
+
+                        <div class="d-flex align-items-center gap-2">
+
+                            {{-- minus --}}
+                            <button type="button"
+                                class="btn rounded-circle gray-bg"
+                                onclick="document.getElementById('guestCount').value = Math.max(1, parseInt(document.getElementById('guestCount').value) - 1)">
+                                –
+                            </button>
+
+                            {{-- number input --}}
+                            <input id="guestCount"
+                                type="number"
+                                name="guests"
+                                min="1"
+                                value="{{ old('guests', 1) }}"
+                                class="form-control border-0 border-bottom rounded-0 text-center guest-count"
+                                style="max-width: 70px; box-shadow:none;"
+                                required>
+
+                            {{-- plus --}}
+                            <button type="button"
+                                class="btn rounded-circle gray-bg"
+                                onclick="document.getElementById('guestCount').value = parseInt(document.getElementById('guestCount').value) + 1">
+                                +
+                            </button>
+
+                        </div>
+                    </div>
+
+
+                    {{-- Reserve Button --}}
+                    @if(auth()->check())
+                    <button type="submit" class="btn btn-danger reds-bg w-100 py-2">
+                        Reserve
+                    </button>
+                    @else
+                    <a href="{{ route('login') }}" class="btn btn-danger reds-bg w-100 py-2">
+                        Login to Book
+                    </a>
+                    @endif
+                </form>
             </div>
-            @if(auth()->check())
-            <button type="submit">Pesan Sekarang</button>
-            @else
-            <a href="{{ route('login') }}">
-                <button type="button">Login untuk Pesan</button>
-            </a>
-            @endif
-        </form>
+        </div>
+
     </div>
 
     {{-- Reviews Section --}}
-    <div class="reviews">
-        <h3>Ulasan Pengguna</h3>
+    <div class="mt-5 px-5">
+        <h3 class="fw-bold mb-4">Reviews</h3>
+
         @if(isset($reviews) && $reviews->count() > 0)
         @foreach($reviews as $review)
-        <div class="review">
-            <strong>{{ optional($review->user)->name ?? 'Anonim' }}</strong> - ⭐ {{ $review->rating }}/5
-            <p>{{ $review->comment }}</p>
-            <small>{{ \Illuminate\Support\Carbon::parse($review->created_at)->format('d M Y') }}</small>
+        <div class="card mb-3 border-0 shadow-sm rounded-4 p-3">
+            <strong>{{ optional($review->user)->name ?? 'Anonymous' }}</strong>
+            <span class="ms-2 text-warning">⭐ {{ $review->rating }}/5</span>
+
+            <p class="mt-2 mb-1">{{ $review->comment }}</p>
+            <small class="text-muted">
+                Reviewed on {{ \Carbon\Carbon::parse($review->created_at)->format('M d, Y') }}
+            </small>
         </div>
         @endforeach
         @else
-        <p style="color: #666;">Belum ada ulasan untuk properti ini.</p>
+        <p class="text-muted">No reviews yet for this property.</p>
         @endif
     </div>
-
-    <br>
-    <a href="{{ route('home') }}">← Kembali</a>
 </div>
 @endsection

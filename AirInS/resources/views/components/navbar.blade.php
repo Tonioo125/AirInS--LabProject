@@ -1,8 +1,5 @@
-<link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
-<link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
-    <div class="container-fluid mx-5">
+    <div class="container-fluid">
         <a class="navbar-brand fw-semibold logo" href="{{ auth()->check() ? route('home') : route('welcome') }}">AirInS</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
@@ -10,20 +7,20 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="mt-2 mt-lg-0" style="max-width: 75vw; width: 100%;">
+        <div class="mt-2 mt-lg-0" style="max-width: 70vw; width: 100%;">
             <form class="d-flex" action="{{ route('search') }}" method="GET">
                 <div class="input-group">
-                    <input class="form-control form-control-sm"
+                    <input class="form-control form-control-sm ps-3 rounded-pill"
                         type="text"
                         name="keyword"
                         placeholder="Search properties..."
-                        value="{{ request('keyword') }}">
-                    <button class="btn btn-outline-primary btn-sm" type="submit">Search</button>
+                        value="{{ request('keyword') }}"
+                        style="padding-top: 6px; padding-bottom: 6px;">
                 </div>
             </form>
         </div>
 
-            <ul class="navbar-nav ms-auto align-items-lg-center">
+            <ul class="navbar-nav align-items-lg-center">
                 @guest
                     <li class="nav-item">
                         <a class="nav-link" href="/about">About</a>
@@ -32,7 +29,7 @@
                         <a class="nav-link" href="{{ route('login') }}">Log in</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-primary btn-sm ms-lg-2 mt-2 mt-lg-0" href="{{ route('register') }}">Sign up</a>
+                        <a class="btn btn-danger rounded-pill m-1 btn-sm ms-lg-2 mt-2 mt-lg-0 redd-bg" href="{{ route('register') }}">Sign up</a>
                     </li>
                 @endguest
 
@@ -53,11 +50,10 @@
                             <li><a class="dropdown-item" href="/favorites">Favorites</a></li>
                             <li><a class="dropdown-item" href="/properties/add">Add Property</a></li>
                             <li><a class="dropdown-item" href="/my-properties">My Properties</a></li>
-                            <li><hr class="dropdown-divider"></li>
                             <li>
-                                <form action="{{ route('logout') }}" method="POST" class="px-3 py-1">
+                                <form action="{{ route('logout') }}" method="POST" class="m-0 p-0">
                                     @csrf
-                                    <button type="submit" class="btn btn-danger btn-sm w-100">Sign out</button>
+                                    <button type="submit" class="dropdown-item" style="background:none;border:none;">Sign out</button>
                                 </form>
                             </li>
                         </ul>
@@ -67,6 +63,4 @@
         </div>
     </div>
 </nav>
-
-<script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 

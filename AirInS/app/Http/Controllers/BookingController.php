@@ -95,7 +95,7 @@ class BookingController extends Controller
         //return errror jika ada masalah
 
 
-        return redirect()->route('home')->with('success', 'Booking berhasil dibuat!');
+        return redirect()->route('bookings.index')->with('success', 'Booking berhasil dibuat!');
     }
 
     /**

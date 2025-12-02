@@ -9,10 +9,7 @@
     <div class="property-info">
         <div class="property-title">{{ $property->title }}</div>
 
-        <div class="property-location">{{ $property->location }}</div>
-
-        <div class="property-price">
-            Rp{{ number_format($property->price, 0, ',', '.') }} / night
-        </div>
+        <div class="property-location text-secondary">{{ $property->location }}</div>
+        <p class="reds-color fw-bold mb-0 d-inline">Rp{{ number_format($property->price, 0, ',', '.') }} <span class="fw-normal text-secondary">/ night</span></p>
     </div>
 </div>

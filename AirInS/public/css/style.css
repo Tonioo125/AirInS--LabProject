@@ -19,6 +19,21 @@ body {
     color: rgb(255, 49, 94) !important;
 }
 
+.reds-bg {
+    background-color: rgb(253, 50, 67) !important;
+}
+
+.redd-bg {
+    background-color: rgb(255, 35, 35) !important;
+}
+.reds-color {
+    color: rgb(253, 50, 67) !important;
+}
+
+.gray-bg {
+    background-color: #e3e3e3 !important;
+}
+
 .logo span {
     color: #111;
 }
@@ -66,7 +81,7 @@ body {
 
 .property-card img {
     width: 100%;
-    height: 180px;
+    height: 260px;
     object-fit: cover;
 }
 
@@ -128,7 +143,12 @@ body {
 /* PROPERTY GRID */
 .property-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 25px;
     justify-content: center;
 }
+
+/* Guest counter: hide native number input spinners */
+.guest-count::-webkit-inner-spin-button,
+.guest-count::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.guest-count[type=number] { -moz-appearance: textfield; appearance: textfield; }
