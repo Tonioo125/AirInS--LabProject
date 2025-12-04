@@ -6,6 +6,7 @@
     <title>@yield('title', 'AirInS')</title>
     <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    @stack('styles')
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}" defer></script>
 </head>
 <body>
@@ -13,5 +14,6 @@
     <main>
         @yield('content')
     </main>
+    @stack('scripts')
 </body>
 </html>

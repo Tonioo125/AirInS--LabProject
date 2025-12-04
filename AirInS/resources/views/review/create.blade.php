@@ -4,12 +4,12 @@
 
 <div class="container" style="max-width: 700px; margin: 40px auto;">
 
-    <h2>Write a Review</h2>
+    <h3 class="fw-bold mb-4">Write a Review</h3>
 
     <div style="background:#fff; padding:25px; border-radius:12px; box-shadow:0 3px 10px rgba(0,0,0,0.1);">
 
-        <h4>{{ $booking->bookingDetails->first()->property->title }}</h4>
-        <p>Check-out: {{ $booking->check_out_date }}</p>
+        <h4 class="fw-medium">{{ $booking->bookingDetails->first()->property->title }}</h4>
+        <p class="text-secondary">Check-out: {{ $booking->check_out_date }}</p>
 
         <form action="{{ route('review.store', $booking->id) }}" method="POST">
             @csrf
@@ -35,7 +35,7 @@
                 <p style="color:red">{{ $message }}</p>
             @enderror
 
-            <button type="submit" class="btn btn-danger mt-4 w-100" style="padding:12px">
+            <button type="submit" class="btn btn-danger reds-bg mt-4 w-100" style="padding:12px">
                 Submit Review
             </button>
 

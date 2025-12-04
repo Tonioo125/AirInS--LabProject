@@ -56,6 +56,11 @@ class PropertyController extends Controller
             $q->where('property_id', $id);
         })->get();
 
+        // concat reviews with user info
+        foreach ($reviews as $review) {
+            $review->user = $review->bookingHeader->airusers;
+        }
+
         return view('bookings.detail', compact('property', 'userHasCompleted', 'reviews'));
     }
 
@@ -75,14 +80,6 @@ class PropertyController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
@@ -92,5 +89,37 @@ class PropertyController extends Controller
             ->paginate(8)
             ->withQueryString();
         return view('property.search', compact('properties', 'keyword'));
+    }
+
+    public function myProperties(){
+        $user = Auth::user();
+
+        // Admin melihat semua property
+        if ($user->role === 'admin') {
+            $properties = Property::with('propertyCategories')
+                ->orderBy('created_at', 'desc')
+                ->paginate(6);
+        } 
+        // Member hanya melihat property miliknya
+        else {
+            $properties = Property::with('propertyCategories')
+                ->where('user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->paginate(6);
+        }
+    }
+    public function destroy($id){
+        $property = Property::findOrFail($id);
+
+        // Cek kepemilikan kecuali admin
+        if (Auth::user()->role !== 'admin' && $property->UserID != Auth::id()) {
+            abort(403);
+        }
+
+        // Hapus foto dari storage
+        if ($property->Photos && file_exists(storage_path('app/public/' . $property->Photos))) {
+            unlink(storage_path('app/public/' . $property->Photos));
+    }
+
     }
 }

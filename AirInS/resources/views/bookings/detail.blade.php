@@ -1,12 +1,12 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="container py-5">
+<div class="container">
 
     {{-- Validation Errors --}}
     @if ($errors->any())
     <div class="alert alert-danger">
-        <ul class="mb-0">
+        <ul class="mt-3">
             @foreach ($errors->all() as $error)
             <li>{{ $error }}</li>
             @endforeach
@@ -14,8 +14,15 @@
     </div>
     @endif
 
+    {{-- Flash Messages --}}
+    @if (session('error'))
+    <div class="mt-3 alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
+
     {{-- Main Content --}}
-    <div class="row g-5">
+    <div class="row g-5 py-5">
 
         {{-- Left Image --}}
         <div class="col-lg-7">
@@ -50,7 +57,7 @@
             <div class="card shadow-sm border-0 rounded-4 p-4">
                 <h5 class="fw-bold mb-4">Reserve</h5>
 
-                <form action="{{ route('bookings.store') }}" method="POST">
+                <form action="{{ route('bookings.store', ['id' => $property->id]) }}" method="POST">
                     @csrf
                     <input type="hidden" name="property_id" value="{{ $property->id }}">
 
@@ -59,6 +66,7 @@
                         <label class="form-label">Check-in</label>
                         <div class="input-group">
                             <input type="date"
+                                id="check_in"
                                 name="check_in"
                                 class="form-control border-0 border-bottom rounded-0"
                                 style="box-shadow:none;"
@@ -72,6 +80,7 @@
                         <label class="form-label">Check-out</label>
                         <div class="input-group">
                             <input type="date"
+                                id="check_out"
                                 name="check_out"
                                 class="form-control border-0 border-bottom rounded-0"
                                 style="box-shadow:none;"
@@ -136,11 +145,13 @@
 
         @if(isset($reviews) && $reviews->count() > 0)
         @foreach($reviews as $review)
-        <div class="card mb-3 border-0 shadow-sm rounded-4 p-3">
-            <strong>{{ optional($review->user)->name ?? 'Anonymous' }}</strong>
-            <span class="ms-2 text-warning">⭐ {{ $review->rating }}/5</span>
+        <div class="card mb-3 border-1 shadow-sm rounded-4 p-3">
+            <div class="d-flex flex-row justify-content-between">
+                <strong class="mb-0">{{ optional($review->user)->name ?? 'Anonymous' }}</strong>
+                <span class="ms-2 text-warning">⭐ {{ $review->rating }}/5</span>
+            </div>
 
-            <p class="mt-2 mb-1">{{ $review->comment }}</p>
+            <p class="mt-2 mb-1 fw-light text-secondary">{{ $review->comment }}</p>
             <small class="text-muted">
                 Reviewed on {{ \Carbon\Carbon::parse($review->created_at)->format('M d, Y') }}
             </small>
@@ -152,3 +163,77 @@
     </div>
 </div>
 @endsection
+
+@push('styles')
+<style>
+    .card{
+        border: 1px solid #e0e0e0;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+(function(){
+    const dataEl = document.getElementById('bookedRangesData');
+    const bookedRanges = dataEl ? JSON.parse(dataEl.dataset.json || '[]') : [];
+
+    const inEl = document.getElementById('check_in');
+    const outEl = document.getElementById('check_out');
+
+    function parse(d){ return new Date(d + 'T00:00:00'); }
+    function todayStr(){ const t = new Date(); const d = new Date(t.getFullYear(), t.getMonth(), t.getDate()); return d.toISOString().slice(0,10); }
+
+    function isDateInRanges(dStr){
+        const d = parse(dStr);
+        return bookedRanges.some(r => d >= parse(r.start) && d <= parse(r.end));
+    }
+
+    function rangesOverlap(aStart, aEnd, bStart, bEnd){
+        const as = parse(aStart), ae = parse(aEnd), bs = parse(bStart), be = parse(bEnd);
+        return as <= be && bs <= ae;
+    }
+
+    function selectionOverlaps(){
+        if(!(inEl?.value && outEl?.value)) return false;
+        return bookedRanges.some(r => rangesOverlap(inEl.value, outEl.value, r.start, r.end));
+    }
+
+    function bumpOneDay(dStr){ const d = parse(dStr); d.setDate(d.getDate() + 1); return d.toISOString().slice(0,10); }
+
+    // Disallow selecting past dates
+    const tStr = todayStr();
+    if(inEl) inEl.min = tStr;
+    if(outEl) outEl.min = tStr;
+
+    function syncOutMin(){
+        if(!inEl || !outEl) return;
+        if(!inEl.value){ outEl.min = tStr; return; }
+        outEl.min = bumpOneDay(inEl.value);
+    }
+
+    inEl?.addEventListener('change', () => {
+        if(inEl.value && isDateInRanges(inEl.value)){
+            inEl.value = '';
+            syncOutMin();
+            return;
+        }
+        syncOutMin();
+        if(outEl?.value && selectionOverlaps()){
+            outEl.value = '';
+        }
+    });
+
+    outEl?.addEventListener('change', () => {
+        if(outEl.value && isDateInRanges(outEl.value)){
+            outEl.value = '';
+            return;
+        }
+        if(selectionOverlaps()){
+            outEl.value = '';
+        }
+    });
+
+})();
+</script>
+@endpush

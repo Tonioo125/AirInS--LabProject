@@ -36,7 +36,7 @@ class BookingController extends Controller
         }
         $booking->delete();
 
-        return redirect()->route('bookings')->with('success', 'Booking canceled successfully.');
+        return redirect()->route('bookings.index')->with('success', 'Booking canceled successfully.');
     }
 
     /**
@@ -50,9 +50,31 @@ class BookingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         // dump($request->all());
+
+        // Gather booked date ranges for this property from BookingHeader (dates live on headers)
+        $bookedRanges = BookingHeader::whereHas('bookingDetails', function($q) use ($id) {
+                $q->where('property_id', $id);
+            })
+            ->get(['check_in_date', 'check_out_date']);
+        
+        if ($bookedRanges) {
+            foreach ($bookedRanges as $range) {
+                $existingStart = new \DateTime($range->check_in_date);
+                $existingEnd = new \DateTime($range->check_out_date);
+                $requestedStart = new \DateTime($request->check_in);
+                $requestedEnd = new \DateTime($request->check_out);
+
+                // Check for overlap
+                if ($requestedStart <= $existingEnd && $requestedEnd >= $existingStart) {
+                    return redirect()->back()
+                    ->with('error', 'The property is unavailable for the selected dates. Please select another dates range')->withInput();
+                }
+            }
+        }
+        
         $request->validate([
             'property_id' => 'required|exists:properties,id',
             'check_in' => 'required|date|after_or_equal:today',
@@ -68,6 +90,7 @@ class BookingController extends Controller
         $totalNights += 1; // termasuk hari check-in
         $property = \App\Models\Property::findOrFail($request->property_id);
         $totalPrice = $property->price * $totalNights;
+        
 
         // Debugging output
         // dump('Total Nights: ' . $totalNights);

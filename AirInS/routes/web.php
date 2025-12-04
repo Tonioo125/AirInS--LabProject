@@ -44,8 +44,8 @@ Route::post('/logout', function (Illuminate\Http\Request $request) {
 
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::get('/bookings', [BookingController::class, 'index'])->name('bookings');
-    Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+    Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+    Route::post('/bookings/{id}', [BookingController::class, 'store'])->name('bookings.store');
     Route::post('/bookings/{id}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
     Route::get('/review/{bookingId}', [ReviewController::class, 'create'])->name('review.create');
     Route::post('/review/{bookingId}', [ReviewController::class, 'store'])->name('review.store');
