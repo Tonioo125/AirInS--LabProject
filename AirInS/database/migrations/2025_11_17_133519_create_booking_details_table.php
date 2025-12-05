@@ -15,9 +15,8 @@ return new class extends Migration
             $table->string('booking_id', 5);
             $table->string('property_id', 5);
             $table->integer('guest_count');
-            $table->integer('price_per_night');
+            $table->bigInteger('price_per_night');
             $table->timestamps();
-
             $table->unique('booking_id');
             $table->foreign('booking_id')->references('id')->on('booking_headers')->onDelete('cascade');
             $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');

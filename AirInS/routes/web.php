@@ -6,19 +6,15 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\ProfileController;
+use App\Models\Property;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-//=======================Not Logged In=========================
 
-// Fallback to serve public disk files if the storage symlink is broken
-Route::get('/storage/{path}', function (string $path) {
-    if (!Storage::disk('public')->exists($path)) {
-        abort(404);
-    }
-    return response()->file(Storage::disk('public')->path($path));
-})->where('path', '.*');
+//=======================Not Logged In=========================
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('welcome');
@@ -49,14 +45,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/bookings/{id}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
     Route::get('/review/{bookingId}', [ReviewController::class, 'create'])->name('review.create');
     Route::post('/review/{bookingId}', [ReviewController::class, 'store'])->name('review.store');
-});
-
-//Admin Only
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/dashboard', [HomeController::class, 'adminDashboard'])->name('admin.dashboard');
-});
-
-//User Routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/user/dashboard', [HomeController::class, 'userDashboard'])->name('user.dashboard');
+    Route::get('/my-properties', [PropertyController::class, 'myProperties'])->name('property.index');
+    Route::get('/my-properties/create', [PropertyController::class, 'create'])->name('property.create');
+    Route::post('/my-properties/store', [PropertyController::class, 'store'])->name('property.store');
+    Route::get('/my-properties/{id}/edit', [PropertyController::class, 'edit'])->name('property.edit');
+    Route::post('/my-properties/{id}/update', [PropertyController::class, 'update'])->name('property.update');
+    Route::post('/my-properties/{id}/delete', [PropertyController::class, 'destroy'])->name('property.destroy');
+    Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+    Route::post('/favorites/{propertyID}/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });

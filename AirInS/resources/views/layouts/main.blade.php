@@ -6,6 +6,7 @@
     <title>@yield('title', 'AirInS')</title>
     <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     @stack('styles')
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}" defer></script>
 </head>

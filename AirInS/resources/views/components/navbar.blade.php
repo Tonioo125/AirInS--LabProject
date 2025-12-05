@@ -10,12 +10,14 @@
         <div class="mt-2 mt-lg-0" style="max-width: 70vw; width: 100%;">
             <form class="d-flex" action="{{ route('search') }}" method="GET">
                 <div class="input-group">
-                    <input class="form-control form-control-sm ps-3 rounded-pill"
+                    <input class="form-control form-control-sm rounded-pill"
                         type="text"
                         name="keyword"
                         placeholder="Search properties..."
                         value="{{ request('keyword') }}"
-                        style="padding-top: 6px; padding-bottom: 6px;">
+                        style="background: url('/assets/search.svg') no-repeat 10px center;
+                         background-size: 16px;
+                         padding-left: 36px;">
                 </div>
             </form>
         </div>
@@ -48,7 +50,7 @@
                             <li><a class="dropdown-item" href="/profile">Profile</a></li>
                             <li><a class="dropdown-item" href="/bookings">My Bookings</a></li>
                             <li><a class="dropdown-item" href="/favorites">Favorites</a></li>
-                            <li><a class="dropdown-item" href="/properties/add">Add Property</a></li>
+                            <li><a class="dropdown-item" href="/my-properties/create">Add Property</a></li>
                             <li><a class="dropdown-item" href="/my-properties">My Properties</a></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST" class="m-0 p-0">
@@ -63,4 +65,6 @@
         </div>
     </div>
 </nav>
+
+
 

@@ -15,7 +15,7 @@
                     $isCompleted = now()->gt($booking->check_out_date);
                 @endphp
 
-                <div class="booking-card d-flex flex-row">
+                <div class="booking-card d-flex flex-row mb-4">
                     <a href="/property/detail/{{ $property->id }}">
                         <img src="{{ asset('storage/'.$property->photos) }}" alt="{{ $property->title }}">
                     </a>

@@ -11,6 +11,11 @@ class Favorite extends Model
 
     protected $table = 'favorites';
 
+    protected $primaryKey = null;
+    public $incrementing = false;
+    public $timestamps = false;
+    protected $keyType = 'string';
+
     protected $fillable = [
         'user_id', 'property_id',
     ];

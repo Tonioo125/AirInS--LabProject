@@ -5,18 +5,14 @@
 
     {{-- Validation Errors --}}
     @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul class="mt-3">
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
+        <div class="alert alert-danger mt-4 border-5 mx-auto">
+            <p class="mb-0"><strong>Error:</strong> {{ $errors->first() }}</p>
+        </div>
     @endif
 
     {{-- Flash Messages --}}
     @if (session('error'))
-    <div class="mt-3 alert alert-danger">
+    <div class="mt-4 alert alert-danger border-5 mx-auto">
         {{ session('error') }}
     </div>
     @endif

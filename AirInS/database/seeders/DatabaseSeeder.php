@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $user = AirUser::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
+            'password' => bcrypt('password'),
         ]);
 
         // 3. Create properties (Faker will choose valid category IDs)
