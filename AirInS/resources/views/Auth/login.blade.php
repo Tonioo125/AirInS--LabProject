@@ -8,6 +8,9 @@
         </div>
         @csrf
         <h5 class="fw-bold mb-3 text-center">Login to your account</h5>
+        @if ($errors->has('login_error'))
+            <p class="text-danger text-center small mb-3">{{ $errors->first('login_error') }}</p>
+        @endif
         <div class="mb-3">
             <label for="email" class="form-label-sm fw-bold ">Email</label>
             <input class="form-control form-control" type="email" name="email" value="{{ old('email') }}" style="font-size: 0.875rem;">
@@ -31,11 +34,22 @@
                 <a class="text-decoration-none" style="color: rgb(252, 62, 141)"
                 href="/register">Register</a></p>
         </div>
-    
-    
-        @error('email')
-        <p style="color:red">{{$message}}</p>
-        @enderror
     </form>
 </div>
 @endsection
+
+@push('styles')
+<style>
+    .form-control:focus,
+    .form-select:focus {
+        outline: 2px solid #dc3545; /* red outline */
+        border-color: #dc3545;
+        box-shadow: none;
+    }
+    /* Show red outline when invalid via server-side error */
+    .is-invalid {
+        outline: 2px solid #dc3545;
+        border-color: #dc3545;
+    }
+</style>
+@endpush

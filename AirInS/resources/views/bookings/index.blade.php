@@ -3,6 +3,10 @@
 @section('content')
 <div class="my-bookings-container">
     <h3 class="mb-4 fw-bold">My Bookings</h3>
+    {{-- Flash Messages --}}
+    @if (session('error'))
+        <div class="alert alert-danger mb-4">{{ session('error') }}</div>
+    @endif
 
     @if ($bookings->isEmpty())
         <p class="no-booking">You have no bookings yet.</p>

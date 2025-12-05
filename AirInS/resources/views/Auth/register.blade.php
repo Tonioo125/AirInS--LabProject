@@ -56,8 +56,22 @@
                 <a class="text-decoration-none" style="color: rgb(252, 62, 141)" href="/login">Login</a>
             </p>
         </div>
-
-        
     </form>
 </div>
 @endsection
+
+@push('styles')
+<style>
+    .form-control:focus,
+    .form-select:focus {
+        outline: 2px solid #dc3545; /* red outline */
+        border-color: #dc3545;
+        box-shadow: none;
+    }
+    /* Show red outline when invalid via server-side error */
+    .is-invalid {
+        outline: 2px solid #dc3545;
+        border-color: #dc3545;
+    }
+</style>
+@endpush

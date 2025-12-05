@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BookingHeader;
 use App\Models\Property;
+use App\Models\Favorite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use SebastianBergmann\Environment\Console;
@@ -130,11 +131,10 @@ class PropertyController extends Controller
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:property_categories,id',
             'description' => 'required|string',
-            'photos' => 'required|image|max:2048',
+            'photos' => 'nullable|image|max:2048',
             'is_available' => 'nullable|in:0,1',
         ]);
-
-        // Handle optional photo replace
+        
         if ($request->hasFile('photos')) {
             $newPath = $request->file('photos')->store('properties', 'public');
             $property->photos = $newPath;
@@ -159,6 +159,22 @@ class PropertyController extends Controller
             ->orWhere('location', 'like', "%{$keyword}%")
             ->paginate(8)
             ->withQueryString();
+
+        if (Auth::check()) {
+            $userID = Auth::user()->id;
+
+            $favoriteIDs = Favorite::where('user_id', $userID)
+                ->pluck('property_id')
+                ->toArray();
+
+            foreach ($properties as $property) {
+                $property->is_favorited = in_array($property->id, $favoriteIDs);
+            }
+        } else {
+            foreach ($properties as $property) {
+                $property->is_favorited = false;
+            }
+        }
         return view('properties.search', compact('properties', 'keyword'));
     }
 

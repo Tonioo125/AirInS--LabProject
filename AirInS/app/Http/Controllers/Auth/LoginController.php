@@ -26,7 +26,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Invalid credentials.',
+            'login_error' => 'Email atau password salah.',
         ]);
     }
 }

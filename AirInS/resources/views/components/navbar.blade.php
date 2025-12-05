@@ -25,7 +25,7 @@
             <ul class="navbar-nav align-items-lg-center">
                 @guest
                     <li class="nav-item">
-                        <a class="nav-link" href="/about">About</a>
+                        <a class="nav-link" href="#">About</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}">Log in</a>
@@ -37,7 +37,7 @@
 
                 @auth
                     <li class="nav-item">
-                        <a class="nav-link" href="/about">About Us</a>
+                        <a class="nav-link" href="#">About Us</a>
                     </li>
 
                     {{-- User Dropdown --}}

@@ -2,16 +2,16 @@
 
 @section('content')
 <div class="container py-4">
-    <h3 class="titles mb-2 fw-semibold">My Favorite Properties</h3>
+    <h3 class="titles mb-4 fw-semibold">My Favorite Properties</h3>
 
     @if(session('success'))
     <div class="alert alert-success mb-4">{{ session('success') }}</div>
     @endif
 
     @if($favorites->isEmpty())
-    <p class="text-muted fs-5">You haven’t favorited any properties yet.</p>
+    <p class="favorite text-muted px-2">You haven’t favorited any properties yet.</p>
     @else
-    <div class="property-grid py-3 px-2 d-flex flex-wrap gap-3 justify-content-start">
+    <div class="row g-4 py-3 px-2">
         @foreach($favorites as $fav)
         @php
         $property = $fav->property;
@@ -57,6 +57,9 @@
 
 @push('styles')
 <style>
+    .favorite{
+        font-size: 16px;
+    }
     .titles{
         padding: 40px 0 0 10px;
     }
