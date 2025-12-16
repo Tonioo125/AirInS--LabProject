@@ -40,7 +40,7 @@ class PropertyController extends Controller
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:property_categories,id',
             'description' => 'required|string',
-            'photos' => 'required|image|max:2048', // 2MB
+            'photos' => 'required|image|max:2048',
             'is_available' => 'nullable|in:0,1',
         ]);
 

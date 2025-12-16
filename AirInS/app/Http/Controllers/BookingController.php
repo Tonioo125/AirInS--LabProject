@@ -39,22 +39,15 @@ class BookingController extends Controller
         return redirect()->route('bookings.index')->with('success', 'Booking canceled successfully.');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request, $id)
     {
         // dump($request->all());
 
-        // Gather booked date ranges for this property from BookingHeader (dates live on headers)
         $bookedRanges = BookingHeader::whereHas('bookingDetails', function($q) use ($id) {
                 $q->where('property_id', $id);
             })
@@ -92,7 +85,7 @@ class BookingController extends Controller
         $totalPrice = $property->price * $totalNights;
         
 
-        // Debugging output
+        // Debug
         // dump('Total Nights: ' . $totalNights);
         // dump('Price per Night: ' . $property->price);
         // dump('Total Price: ' . $totalPrice);
@@ -115,7 +108,7 @@ class BookingController extends Controller
             'price_per_night' => $property->price, // Harga akan diatur nanti
         ]);
 
-        //return errror jika ada masalah
+        //return errror kalo ada masalah
 
 
         return redirect()->route('bookings.index')->with('success', 'Booking berhasil dibuat!');

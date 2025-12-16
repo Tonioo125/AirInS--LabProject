@@ -24,15 +24,14 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'name' => 'required|string|max:50',
+            'name' => 'required|string|max:5',
             'email' => 'required|email|max:50',
             'phone' => 'nullable|string|max:20',
             'gender' => 'nullable|string|max:6',
         ]);
 
-        // Use query-based update to avoid method resolution issues
         AirUser::where('id', $user->id)->update($request->only(['name', 'email', 'phone', 'gender']));
-        // Redirect dengan pesan sukses
+
         return redirect()->route('profile.index')->with('success', 'Profile updated successfully.');
     }
 }
